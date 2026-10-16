@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SmartDoc Generator — Sistem Automasi Dokumen Kolej">
+  <title>SmartDoc Generator</title>
+
+  <!-- ── STYLESHEETS ── -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/forms.css">
+  <link rel="stylesheet" href="css/preview.css">
+
+  <!-- ── FONT AWESOME (CDN) ── -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+
+  <!-- ── docx.js v8 (Word export) ── -->
+  <script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
+
+  <!-- ── jsPDF v2 + autotable (PDF export) ── -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+          crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"
+          crossorigin="anonymous"></script>
+</head>
+
+<body>
+<div id="shell">
+
+  <!-- ═══════════════════════════════════════════
+       SIDEBAR
+  ════════════════════════════════════════════ -->
+  <aside id="sidebar" role="navigation" aria-label="Main Navigation">
+
+    <div class="sidebar-brand">
+      <div id="sidebar-logo-wrap" style="text-align:center;margin-bottom:8px;padding:8px 12px 0;display:none">
+        <img id="sidebar-logo" src="" alt="Logo KKBS"
+             style="width:100%;max-width:200px;height:auto;display:block;margin:0 auto;background:#fff;border-radius:6px;padding:6px;object-fit:contain">
+      </div>
+      <div class="app-name"><i class="fa fa-file-alt" style="margin-right:7px;color:var(--teal-light)"></i>SmartDoc Generator</div>
+      <div class="app-sub" data-i18n="dash_subtitle">Sistem Automasi Dokumen Kolej</div>
+      <div class="inst-name" id="sidebar-inst-name"></div>
+    </div>
+
+    <nav>
+      <div class="nav-section-label" data-i18n="nav_dashboard">Utama</div>
+      <a href="#dashboard" aria-label="Dashboard">
+        <i class="fa fa-tachometer-alt"></i>
+        <span data-i18n="nav_dashboard">Papan Pemuka</span>
+      </a>
+
+      <div class="nav-section-label" style="margin-top:6px">Dokumen</div>
+      <a href="#letters" aria-label="Surat Rasmi">
+        <i class="fa fa-envelope"></i>
+        <span data-i18n="nav_letters">Surat Rasmi</span>
+      </a>
+      <a href="#memos" aria-label="Memorandum">
+        <i class="fa fa-file-alt"></i>
+        <span data-i18n="nav_memos">Memorandum</span>
+      </a>
+      <a href="#certs" aria-label="Sijil">
+        <i class="fa fa-certificate"></i>
+        <span data-i18n="nav_certs">Sijil</span>
+      </a>
+      <a href="#reports" aria-label="Laporan Aktiviti">
+        <i class="fa fa-chart-bar"></i>
+        <span data-i18n="nav_reports">Laporan Aktiviti</span>
+      </a>
+
+      <div class="nav-section-label" style="margin-top:6px">Pengurusan</div>
+      <a href="#history" aria-label="Sejarah Dokumen">
+        <i class="fa fa-history"></i>
+        <span data-i18n="nav_history">Sejarah Dokumen</span>
+      </a>
+      <a href="#settings" aria-label="Tetapan">
+        <i class="fa fa-cog"></i>
+        <span data-i18n="nav_settings">Tetapan</span>
+      </a>
+      <a href="#help" aria-label="Bantuan">
+        <i class="fa fa-question-circle"></i>
+        <span data-i18n="nav_help">Bantuan</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      SmartDoc Generator v1.0<br>
+      Kolej Komuniti Bagan Serai
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════════
+       MAIN AREA
+  ════════════════════════════════════════════ -->
+  <div id="main">
+
+    <!-- ── HEADER ── -->
+    <header id="header" role="banner">
+      <div class="header-left">
+        <button id="menu-toggle" aria-label="Toggle navigation">
+          <i class="fa fa-bars"></i>
+        </button>
+        <div id="breadcrumb" aria-label="Breadcrumb">
+          SmartDoc &rsaquo; <span data-i18n="nav_dashboard">Papan Pemuka</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <div id="lang-toggle" role="group" aria-label="Language selector">
+          <button id="lang-bm" class="active" aria-pressed="true" aria-label="Bahasa Melayu" data-i18n="lang_bm">BM</button>
+          <button id="lang-en" aria-pressed="false" aria-label="English" data-i18n="lang_en">EN</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── APP CONTENT ── -->
+    <main id="app" role="main" aria-live="polite">
+      <!-- Content injected by app.js -->
+      <div class="empty-state">
+        <i class="fa fa-spinner fa-spin"></i>
+        <p>Memuatkan...</p>
+      </div>
+    </main>
+
+  </div><!-- /#main -->
+</div><!-- /#shell -->
+
+<!-- ── TOAST CONTAINER ── -->
+<div id="toast-container" role="alert" aria-live="assertive"></div>
+
+<!-- ═══════════════════════════════════════════
+     JAVASCRIPT MODULES (order matters — no ES modules for file:// compat)
+════════════════════════════════════════════ -->
+<script src="js/logo.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/history.js"></script>
+<script src="js/templates.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/export-word.js"></script>
+<script src="js/export-pdf.js"></script>
+<script src="js/app.js"></script>
+
+<script>
+  // Inline init — runs after all local scripts have loaded.
+  // Settings.get() already handles the logo version check and
+  // writes the correct logo back to localStorage if it is stale.
+  (function() {
+    try {
+      // Trigger the version-check migration inside Settings.get()
+      var s = Settings.get();
+
+      // Institution name in sidebar
+      var sn = document.getElementById('sidebar-inst-name');
+      if (sn) sn.textContent = s.institution_name || 'Kolej Komuniti Bagan Serai';
+
+      // Logo in sidebar — always comes from Settings.get() so it is always current
+      var logoSrc = s.institution_logo || '';
+      var wrap = document.getElementById('sidebar-logo-wrap');
+      var img  = document.getElementById('sidebar-logo');
+      if (wrap && img && logoSrc) {
+        img.src = logoSrc;
+        wrap.style.display = 'block';
+      }
+    } catch(e) {
+      var sn2 = document.getElementById('sidebar-inst-name');
+      if (sn2) sn2.textContent = 'Kolej Komuniti Bagan Serai';
+    }
+  })();
+</script>
+</body>
+</html>
